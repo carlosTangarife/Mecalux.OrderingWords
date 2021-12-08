@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mecalux.OrderingWords.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mecalux.OrderingWords.Infrastructure", "src\Mecalux.OrderingWords.Infrastructure\Mecalux.OrderingWords.Infrastructure.csproj", "{45989624-4414-481B-A92B-3FF5A600BAD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mecalux.OrderingWords.test", "test\Mecalux.OrderingWords.test\Mecalux.OrderingWords.test.csproj", "{192B5191-2A9A-471A-8038-52628997AD56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mecalux.OrderingWords.Test", "test\Mecalux.OrderingWords.test\Mecalux.OrderingWords.Test.csproj", "{192B5191-2A9A-471A-8038-52628997AD56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
