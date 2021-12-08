@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GetOrderOptionsQry } from '@orderWords/application';
 import { OrderOptionsVm } from '@orderWords/domain';
 
@@ -8,15 +8,22 @@ import { OrderOptionsVm } from '@orderWords/domain';
   styleUrls: ['./order-words.component.scss']
 })
 export class OrderWordsComponent implements OnInit {
-  loginForm!: FormGroup;
+  orderWordsForm!: FormGroup;
   orderOptions!: Array<OrderOptionsVm>
 
-  constructor(private readonly getOrderOptionsQry: GetOrderOptionsQry) { }
+  constructor(private readonly fb: FormBuilder, private readonly getOrderOptionsQry: GetOrderOptionsQry) { }
 
   ngOnInit(): void {
     this.getOrderOptions();
+    this.buildForm();
   }
 
+  buildForm(): void {
+    this.orderWordsForm = this.fb.group({
+      orderOption: ['', Validators.required],
+      textToProcess: ['', Validators.required],
+    });
+  }
 
   async getOrderOptions(): Promise<void> {
       this.orderOptions = await this.getOrderOptionsQry.execute();

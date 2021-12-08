@@ -1,4 +1,4 @@
 export interface OrderOptionsVm {
-    Key: string;
-    Value: string;
+    key: string;
+    value: string;
 }

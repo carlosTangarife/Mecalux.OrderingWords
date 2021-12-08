@@ -1,12 +1,32 @@
-<div class="order-words__container">
-    <form class="order-words__form" autocomplete="off" novalidate>
-      <!-- <ul>
-        <li *ngFor="let item of orderOptions() | async">{{item.Value}}</li>
-      </ul>
- -->
-      <pre>
-        {{orderOptions | json}}
-      </pre>
+<div class="container">
+  <h1>Mecalux word ordering</h1>
 
-    </form>
+  <form [formGroup]="orderWordsForm" autocomplete="off" novalidate>
+    <div class="mb-3">
+      <label for="orderOptions" class="form-label">Order Options</label>
+      <select formControlName="orderOption" id="orderOptions" class="form-select" aria-label="Choose your order option">
+        <option value="">Choose your order option</option>
+        <option *ngFor="let orderOption of orderOptions" [ngValue]="orderOption.value">{{orderOption.key}}</option>
+      </select>
+
+      <span class="invalid-feedback" *ngIf="orderWordsForm.controls.orderOption.touched && orderWordsForm.controls.orderOption.errors?.required">
+        Order Options <strong>is required</strong>
+      </span>
+    </div>
+
+    <div class="mb-3">
+      <label for="textToProcess" class="form-label">Text to Process</label>
+      <textarea formControlName="textToProcess" class="form-control" id="textToProcess" rows="3"
+        placeholder="Text to process"></textarea>
+
+      <span class="invalid-feedback" *ngIf="orderWordsForm.controls.textToProcess.touched && orderWordsForm.controls.textToProcess.errors?.required">
+        text to process <strong>is required</strong>
+      </span>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button class="btn btn-outline-primary" type="button" [disabled]="orderWordsForm.invalid">Process Order</button>
+      <button class="btn btn-outline-warning" type="button" [disabled]="orderWordsForm.invalid">Process Analize</button>
+    </div>
+  </form>
 </div>
