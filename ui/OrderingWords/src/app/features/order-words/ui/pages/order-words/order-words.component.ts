@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GetOrderOptionsQry } from '@orderWords/application';
-import { OrderOptionsVm } from '@orderWords/domain';
+import { GetOrderOptionsQry, GetStaticQry } from '@orderWords/application';
+import { OrderOptionsVm, TextStatistics } from '@orderWords/domain';
 
 @Component({
   templateUrl: './order-words.component.html',
@@ -10,8 +10,13 @@ import { OrderOptionsVm } from '@orderWords/domain';
 export class OrderWordsComponent implements OnInit {
   orderWordsForm!: FormGroup;
   orderOptions!: Array<OrderOptionsVm>
+  textStatistics!: TextStatistics;
 
-  constructor(private readonly fb: FormBuilder, private readonly getOrderOptionsQry: GetOrderOptionsQry) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly getOrderOptionsQry: GetOrderOptionsQry,
+    private readonly getStaticQry: GetStaticQry
+  ) { }
 
   ngOnInit(): void {
     this.getOrderOptions();
@@ -20,12 +25,16 @@ export class OrderWordsComponent implements OnInit {
 
   buildForm(): void {
     this.orderWordsForm = this.fb.group({
-      orderOption: ['', Validators.required],
+      orderOption: [''],
       textToProcess: ['', Validators.required],
     });
   }
 
   async getOrderOptions(): Promise<void> {
-      this.orderOptions = await this.getOrderOptionsQry.execute();
+    this.orderOptions = await this.getOrderOptionsQry.execute();
+  }
+
+  async processAnalize(): Promise<void> {
+    this.textStatistics = await this.getStaticQry.execute(this.orderWordsForm.get('textToProcess')?.value);
   }
 }
