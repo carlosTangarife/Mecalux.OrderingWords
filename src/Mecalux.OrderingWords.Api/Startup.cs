@@ -21,6 +21,15 @@ namespace Mecalux.OrderingWords.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
             services.AddInfrastructureServicesRegistration();
             services.AddApplicationServices();
             services.AddControllers();
@@ -43,6 +52,8 @@ namespace Mecalux.OrderingWords.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowOrigin");
 
             app.UseAuthorization();
 
