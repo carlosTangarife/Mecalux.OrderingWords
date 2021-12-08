@@ -1,6 +1,8 @@
 ﻿using Mecalux.OrderingWords.Api.Controllers;
 using Mecalux.OrderingWords.Application.Contracts.Repository;
+using Mecalux.OrderingWords.Application.Contracts.Service;
 using Mecalux.OrderingWords.Applications.Enums;
+using Mecalux.OrderingWords.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +16,7 @@ namespace Mecalux.OrderingWords.Test.Unit.Api
     {
         private Mock<ILogger<OrderWordsController>> _mockLogger;
         private Mock<IOrderOptionsRepository> _mockOrderOptionsRepository;
+        private Mock<IOrderWordsService> _mockOrderWordsService;
         private OrderWordsController _orderWordsController;
 
         [TestInitialize]
@@ -21,7 +24,8 @@ namespace Mecalux.OrderingWords.Test.Unit.Api
         {
             _mockLogger = new Mock<ILogger<OrderWordsController>>();
             _mockOrderOptionsRepository = new Mock<IOrderOptionsRepository>();
-            _orderWordsController = new OrderWordsController(_mockLogger.Object, _mockOrderOptionsRepository.Object);
+            _mockOrderWordsService = new Mock<IOrderWordsService>();
+            _orderWordsController = new OrderWordsController(_mockLogger.Object, _mockOrderOptionsRepository.Object, _mockOrderWordsService.Object);
         }
 
         #region GetOrderOptions
@@ -57,5 +61,90 @@ namespace Mecalux.OrderingWords.Test.Unit.Api
             _mockOrderOptionsRepository.Verify(x => x.GetOrderOptions(), Times.Once);
         }
         #endregion GetOrderOptions
+
+
+        #region GetStatic
+        [TestMethod]
+        public void Given_TextToAnalizeEmpty_When_GetStatic_Expected_TextStatisticsDefault()
+        {
+            // Arrange
+            string textToAnalize = string.Empty;
+            _mockOrderWordsService.Setup(x => x.GetStatic(textToAnalize)).Returns(new TextStatistics { }).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetStatic(textToAnalize);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var textStatistics = ok.Value as TextStatistics;
+            Assert.IsNotNull(textStatistics);
+            Assert.AreEqual(0, textStatistics.HyphensQuantity);
+            Assert.AreEqual(0, textStatistics.SpacesQuantity);
+            Assert.AreEqual(0, textStatistics.WordQuantity);
+            _mockOrderWordsService.Verify(x => x.GetStatic(textToAnalize), Times.Never);
+        }
+
+        [TestMethod]
+        public void Given_TextToAnalize_When_GetStatic_Expected_TextStatistics()
+        {
+            // Arrange
+            string textToAnalize = "Mecalux sistemas de almacenamiento flexibles";
+
+            TextStatistics textStatisticsMock = new()
+            {
+                HyphensQuantity = 0,
+                SpacesQuantity = 4,
+                WordQuantity = 5
+            };
+
+            _mockOrderWordsService.Setup(x => x.GetStatic(textToAnalize)).Returns(textStatisticsMock).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetStatic(textToAnalize);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var textStatistics = ok.Value as TextStatistics;
+            Assert.IsNotNull(textStatistics);
+            Assert.AreEqual(0, textStatistics.HyphensQuantity);
+            Assert.AreEqual(4, textStatistics.SpacesQuantity);
+            Assert.AreEqual(5, textStatistics.WordQuantity);
+            _mockOrderWordsService.Verify(x => x.GetStatic(textToAnalize), Times.Once);
+        }
+
+        [TestMethod]
+        public void Given_TextToAnalize_When_GetStatic_Expected_TextStatisticsWithHyphensQuantity()
+        {
+            // Arrange
+            string textToAnalize = "Mecalux-sistemas de almacenamiento-flexibles";
+
+            TextStatistics textStatisticsMock = new()
+            {
+                HyphensQuantity = 2,
+                SpacesQuantity = 2,
+                WordQuantity = 3
+            };
+
+            _mockOrderWordsService.Setup(x => x.GetStatic(textToAnalize)).Returns(textStatisticsMock).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetStatic(textToAnalize);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var textStatistics = ok.Value as TextStatistics;
+            Assert.IsNotNull(textStatistics);
+            Assert.AreEqual(2, textStatistics.HyphensQuantity);
+            Assert.AreEqual(2, textStatistics.SpacesQuantity);
+            Assert.AreEqual(3, textStatistics.WordQuantity);
+            _mockOrderWordsService.Verify(x => x.GetStatic(textToAnalize), Times.Once);
+        }
+        #endregion GetStatic
     }
 }
