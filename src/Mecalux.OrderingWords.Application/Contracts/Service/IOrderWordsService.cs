@@ -1,4 +1,6 @@
-﻿using Mecalux.OrderingWords.Domain.Entities;
+﻿using Mecalux.OrderingWords.Applications.Enums;
+using Mecalux.OrderingWords.Domain.Entities;
+using System.Collections.Generic;
 
 namespace Mecalux.OrderingWords.Application.Contracts.Service
 {
@@ -7,5 +9,7 @@ namespace Mecalux.OrderingWords.Application.Contracts.Service
         TextStatistics GetStatic(string textToAnalize);
 
         int CountWordsByHyphens(string textToAnalize);
+
+        ICollection<string> GetOrderedText(string textToOrder, OrderOptions orderOptions);
     }
 }

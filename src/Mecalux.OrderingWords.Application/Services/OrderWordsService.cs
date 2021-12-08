@@ -1,5 +1,7 @@
 ﻿using Mecalux.OrderingWords.Application.Contracts.Service;
+using Mecalux.OrderingWords.Applications.Enums;
 using Mecalux.OrderingWords.Domain.Entities;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Mecalux.OrderingWords.Application.Services
@@ -24,6 +26,11 @@ namespace Mecalux.OrderingWords.Application.Services
             Regex regex = new(pattern);
             MatchCollection matchedAuthors = regex.Matches(textToAnalize);
             return matchedAuthors.Count;
+        }
+
+        public ICollection<string> GetOrderedText(string textToOrder, OrderOptions orderOptions)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
