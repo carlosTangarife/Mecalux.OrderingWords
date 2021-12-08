@@ -12,6 +12,7 @@ namespace Mecalux.OrderingWords.Application
             services.AddScoped<IOrderWordsStrategy, OrderWordsStrategy>();
             services.AddScoped<IOrderWordsOptions, OrderWordsAlphabeticAsc>();
             services.AddScoped<IOrderWordsOptions, OrderWordsAlphabeticDesc>();
+            services.AddScoped<IOrderWordsOptions, OrderWordsLengthAsc>();
 
             return services;
         }
