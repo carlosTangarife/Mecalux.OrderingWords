@@ -51,7 +51,7 @@ namespace Mecalux.OrderingWords.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetOrderText")]
+        [HttpGet("GetOrderedText")]
         [ProducesResponseType(typeof(ICollection<string>), (int)HttpStatusCode.OK)]
         public IActionResult GetOrderedText(string textToOrder, OrderOptions orderOptions)
         {
