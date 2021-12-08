@@ -146,5 +146,104 @@ namespace Mecalux.OrderingWords.Test.Unit.Api
             _mockOrderWordsService.Verify(x => x.GetStatic(textToAnalize), Times.Once);
         }
         #endregion GetStatic
+
+        #region GetOrderedText
+        [TestMethod]
+        public void Given_TextToOrderEmpty_When_GetOrderedText_Expected_EmptyList()
+        {
+            // Arrange
+            string textToOrder = string.Empty;
+            OrderOptions orderOptions = default;
+            int elementsExpected = 0;
+
+            // Act
+            var result = _orderWordsController.GetOrderedText(textToOrder, orderOptions);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var orderedText = ok.Value as List<string>;
+            Assert.AreEqual(elementsExpected, orderedText.Count);
+        }
+
+        [TestMethod]
+        public void Given_TextToOrderAndAlphabeticAscOption_When_GetOrderedText_Expected_AlphabeticAscOrderList()
+        {
+            // Arrange
+            string textToOrder = "c b a";
+            List<string> textToOrderExpected = new() { "a", "b", "c" };
+            OrderOptions orderOptions = OrderOptions.AlphabeticAsc;
+            int elementsExpected = 3;
+            _mockOrderWordsService.Setup(x => x.GetOrderedText(textToOrder, orderOptions)).Returns(textToOrderExpected).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetOrderedText(textToOrder, orderOptions);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var orderedText = ok.Value as List<string>;
+            Assert.IsNotNull(orderedText);
+
+            Assert.AreEqual(elementsExpected, orderedText.Count);
+            Assert.AreEqual(textToOrderExpected[0], orderedText[0]);
+            Assert.AreEqual(textToOrderExpected[1], orderedText[1]);
+            Assert.AreEqual(textToOrderExpected[2], orderedText[2]);
+        }
+
+        [TestMethod]
+        public void Given_TextToOrderAndAlphabeticDescOption_When_GetOrderedText_Expected_AlphabeticDescOrderList()
+        {
+            // Arrange
+            string textToOrder = "a b c";
+            List<string> textToOrderExpected = new() { "c", "b", "a" };
+            OrderOptions orderOptions = OrderOptions.AlphabeticDesc;
+            int elementsExpected = 3;
+            _mockOrderWordsService.Setup(x => x.GetOrderedText(textToOrder, orderOptions)).Returns(textToOrderExpected).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetOrderedText(textToOrder, orderOptions);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var orderedText = ok.Value as List<string>;
+            Assert.IsNotNull(orderedText);
+
+            Assert.AreEqual(elementsExpected, orderedText.Count);
+            Assert.AreEqual(textToOrderExpected[0], orderedText[0]);
+            Assert.AreEqual(textToOrderExpected[1], orderedText[1]);
+            Assert.AreEqual(textToOrderExpected[2], orderedText[2]);
+        }
+
+        [TestMethod]
+        public void Given_TextToOrderAndLengthAscOption_When_GetOrderedText_Expected_LengthAscOrderList()
+        {
+            // Arrange
+            string textToOrder = "hijkl defg abc";
+            List<string> textToOrderExpected = new() { "abc", "defg", "hijkl"};
+            OrderOptions orderOptions = OrderOptions.LengthAsc;
+            int elementsExpected = 3;
+            _mockOrderWordsService.Setup(x => x.GetOrderedText(textToOrder, orderOptions)).Returns(textToOrderExpected).Verifiable();
+
+            // Act
+            var result = _orderWordsController.GetOrderedText(textToOrder, orderOptions);
+
+            // Assert
+            var ok = result as OkObjectResult;
+            Assert.IsNotNull(ok);
+
+            var orderedText = ok.Value as List<string>;
+            Assert.IsNotNull(orderedText);
+
+            Assert.AreEqual(elementsExpected, orderedText.Count);
+            Assert.AreEqual(textToOrderExpected[0], orderedText[0]);
+            Assert.AreEqual(textToOrderExpected[1], orderedText[1]);
+            Assert.AreEqual(textToOrderExpected[2], orderedText[2]);
+        }
+        #endregion GetOrderedText
     }
 }

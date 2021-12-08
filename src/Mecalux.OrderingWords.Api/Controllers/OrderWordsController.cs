@@ -1,5 +1,6 @@
 ﻿using Mecalux.OrderingWords.Application.Contracts.Repository;
 using Mecalux.OrderingWords.Application.Contracts.Service;
+using Mecalux.OrderingWords.Applications.Enums;
 using Mecalux.OrderingWords.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -48,6 +49,19 @@ namespace Mecalux.OrderingWords.Api.Controllers
 
             var result = _orderingWordsService.GetStatic(textToAnalize.Trim());
             return Ok(result);
+        }
+
+        [HttpGet("GetOrderText")]
+        [ProducesResponseType(typeof(ICollection<string>), (int)HttpStatusCode.OK)]
+        public IActionResult GetOrderedText(string textToOrder, OrderOptions orderOptions)
+        {
+            _logger.LogInformation("=>>>>>>>>>>>> Geting Ordered Text");
+            if (string.IsNullOrEmpty(textToOrder))
+            {
+                return Ok(new List<string>());
+            }
+
+            return Ok(_orderingWordsService.GetOrderedText(textToOrder.Trim(), orderOptions));
         }
     }
 }
