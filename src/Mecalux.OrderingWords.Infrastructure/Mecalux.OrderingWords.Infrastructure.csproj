@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mecalux.OrderingWords.Application\Mecalux.OrderingWords.Application.csproj" />
+  </ItemGroup>
+
 </Project>
