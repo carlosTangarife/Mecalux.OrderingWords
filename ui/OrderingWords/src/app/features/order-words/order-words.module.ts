@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { GetStaticQry, IOrderWordsRepository } from '@orderWords/application';
+import { GetOrderedTextQry, GetStaticQry, IOrderWordsRepository } from '@orderWords/application';
 import { OrderWordsRepository } from '@orderWords/infraestructure';
 import { SharedModule } from '@shared/shared.module';
 
@@ -18,7 +18,8 @@ import { OrderWordsComponent } from './ui/pages/order-words/order-words.componen
   providers: [
     {provide: IOrderWordsRepository, useClass: OrderWordsRepository},
     GetOrderOptionsQry,
-    GetStaticQry
+    GetStaticQry,
+    GetOrderedTextQry
   ]
 })
 export class OrderWordsModule { }

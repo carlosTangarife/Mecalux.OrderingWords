@@ -8,6 +8,10 @@
         <option value="">Choose your order option</option>
         <option *ngFor="let orderOption of orderOptions" [ngValue]="orderOption.value">{{orderOption.key}}</option>
       </select>
+
+      <span class="invalid-feedback" *ngIf="orderWordsForm.controls.orderOption.touched && orderWordsForm.controls.orderOption.errors?.required">
+        order Options <strong>is required</strong>
+      </span>
     </div>
 
     <div class="mb-3">
@@ -21,8 +25,8 @@
     </div>
 
     <div class="d-grid gap-2">
-      <button class="btn btn-outline-primary" type="button" [disabled]="orderWordsForm.invalid">Process Order</button>
-      <button class="btn btn-outline-warning" type="button" [disabled]="orderWordsForm.invalid" (click)="processAnalize()">Process Analize</button>
+      <button class="btn btn-outline-primary" type="button" (click)="processToOrder()">Process Order</button>
+      <button class="btn btn-outline-warning" type="button" (click)="processToAnalize()">Process Analize</button>
     </div>
   </form>
 
@@ -36,4 +40,14 @@
       </ul>
     </div>
   </div>
+
+  <div class="card mt-3" *ngIf="!!listOrderedText && listOrderedText.length > 0">
+    <div class="card-body">
+      <h5 class="card-title">Text Processed</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let orderedText of listOrderedText">{{orderedText}}</li>
+      </ul>
+    </div>
+  </div>
+
 </div>
