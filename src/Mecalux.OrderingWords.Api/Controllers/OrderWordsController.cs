@@ -1,4 +1,6 @@
 ﻿using Mecalux.OrderingWords.Application.Contracts.Repository;
+using Mecalux.OrderingWords.Application.Contracts.Service;
+using Mecalux.OrderingWords.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,10 +18,14 @@ namespace Mecalux.OrderingWords.Api.Controllers
 
         private readonly IOrderOptionsRepository _orderOptionsRepository;
 
-        public OrderWordsController(ILogger<OrderWordsController> logger, IOrderOptionsRepository orderOptions)
+        private readonly IOrderWordsService _orderingWordsService;
+
+        public OrderWordsController(ILogger<OrderWordsController> logger, IOrderOptionsRepository orderOptions, IOrderWordsService orderingWordsService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _orderingWordsService = orderingWordsService ?? throw new ArgumentNullException(nameof(orderingWordsService));
             _orderOptionsRepository = orderOptions ?? throw new ArgumentNullException(nameof(orderOptions));
+            _orderingWordsService = orderingWordsService ?? throw new ArgumentNullException(nameof(orderOptions));
         }
 
         [HttpGet("GetOrderOptions")]
@@ -28,6 +34,20 @@ namespace Mecalux.OrderingWords.Api.Controllers
         {
             _logger.LogInformation("=>>>>>>>>>>>> Geting Order Options");
             return Ok(_orderOptionsRepository.GetOrderOptions());
+        }
+
+        [HttpGet("GetStatic")]
+        [ProducesResponseType(typeof(TextStatistics), (int)HttpStatusCode.OK)]
+        public IActionResult GetStatic(string textToAnalize)
+        {
+            _logger.LogInformation("=>>>>>>>>>>>> Geting Statics");
+            if (string.IsNullOrEmpty(textToAnalize))
+            {
+                return Ok(new TextStatistics { });
+            }
+
+            var result = _orderingWordsService.GetStatic(textToAnalize.Trim());
+            return Ok(result);
         }
     }
 }
