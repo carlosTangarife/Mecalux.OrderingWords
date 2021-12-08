@@ -10,6 +10,8 @@ namespace Mecalux.OrderingWords.Application
         {
             services.AddScoped<IOrderWordsService, OrderWordsService>();
             services.AddScoped<IOrderWordsStrategy, OrderWordsStrategy>();
+            services.AddScoped<IOrderWordsOptions, OrderWordsAlphabeticAsc>();
+
             return services;
         }
     }
