@@ -24,6 +24,7 @@
       "@environment/*": ["environments/*"],
       "@core/*": ["app/core/*"],
       "@orderWords/*": ["app/features/order-words/*"],
+      "@shared/*": ["app/shared/*"],
     },
   },
   "angularCompilerOptions": {
