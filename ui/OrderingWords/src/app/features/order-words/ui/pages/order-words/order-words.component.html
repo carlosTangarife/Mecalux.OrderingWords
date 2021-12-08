@@ -1,0 +1,12 @@
+<div class="order-words__container">
+    <form class="order-words__form" autocomplete="off" novalidate>
+      <!-- <ul>
+        <li *ngFor="let item of orderOptions() | async">{{item.Value}}</li>
+      </ul>
+ -->
+      <pre>
+        {{orderOptions | json}}
+      </pre>
+
+    </form>
+</div>
