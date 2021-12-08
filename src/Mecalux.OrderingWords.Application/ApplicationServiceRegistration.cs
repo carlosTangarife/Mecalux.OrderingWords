@@ -9,6 +9,7 @@ namespace Mecalux.OrderingWords.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IOrderWordsService, OrderWordsService>();
+            services.AddScoped<IOrderWordsStrategy, OrderWordsStrategy>();
             return services;
         }
     }
