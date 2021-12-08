@@ -23,6 +23,7 @@
     "paths": {
       "@environment/*": ["environments/*"],
       "@core/*": ["app/core/*"],
+      "@orderWords/*": ["app/features/order-words/*"],
     },
   },
   "angularCompilerOptions": {
