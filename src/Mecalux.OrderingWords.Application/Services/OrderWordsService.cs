@@ -18,13 +18,28 @@ namespace Mecalux.OrderingWords.Application.Services
 
         public TextStatistics GetStatic(string textToAnalize)
         {
-            var textSplitedBySpace = textToAnalize.Split(" ");
+            // Handle empty or whitespace-only strings
+            if (string.IsNullOrWhiteSpace(textToAnalize))
+            {
+                return new TextStatistics
+                {
+                    HyphensQuantity = 0,
+                    WordQuantity = 0,
+                    SpacesQuantity = 0
+                };
+            }
+
+            // Split by spaces and remove empty entries
+            var words = textToAnalize.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            
+            // Count spaces in the original text
+            var spaceCount = textToAnalize.Count(c => c == ' ');
 
             return new TextStatistics
             {
                 HyphensQuantity = CountWordsByHyphens(textToAnalize),
-                WordQuantity = textSplitedBySpace.Length,
-                SpacesQuantity = textSplitedBySpace.Length - 1
+                WordQuantity = words.Length,
+                SpacesQuantity = spaceCount
             };
         }
 
